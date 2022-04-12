@@ -1,0 +1,19 @@
+﻿[
+    {
+        "title": "Walk Baxter",
+        "description": "Walk the dog around the block adn don't forget the poop bags.",
+        "priority": 6,
+        "deadline": "2022-04-12"
+    },
+    {
+        "title": "Put bins out",
+        "description": "Collection is on Friday mornings, so bins go out Thursday nights.",
+        "priority": 4,
+        "deadline": "2022-04-14"
+    },
+    {
+        "title": "Make limonchello",
+        "description": "Mix cheap vodka and expensive lemons to get this drink.",
+        "priority": 0
+    }
+]

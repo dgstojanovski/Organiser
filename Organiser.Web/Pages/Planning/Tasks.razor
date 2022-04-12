@@ -1,0 +1,45 @@
+﻿@page "/tasks"
+@inject HttpClient Http
+@using Organiser.Models.Planning;
+
+<PageTitle>Organiser - Tasks</PageTitle>
+
+<h1>Tasks</h1>
+
+@if (tasks == null)
+{
+    <p><em>Fetching tasks...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Priority</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Deadline</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var task in tasks)
+            {
+                <tr>
+                    <td>@task.Priority.ToString()</td>
+                    <td>@task.Title</td>
+                    <td>@task.Description</td>
+                    <td>@(task.Deadline.HasValue ? task.Deadline.Value.ToShortDateString() : string.Empty)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private CalendarTask[]? tasks;
+
+    protected override async Task OnInitializedAsync()
+    {
+        tasks = await Http.GetFromJsonAsync<CalendarTask[]>("sample-data/tasks.json");
+    }
+}
