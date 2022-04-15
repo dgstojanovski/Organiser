@@ -2,8 +2,12 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.Resource;
+using Organiser.Service;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<ServiceDatabaseContext>();
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // Add services to the container.
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -22,11 +26,26 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else
+{
+    app.UseDeveloperExceptionPage();
+    app.UseMigrationsEndPoint();
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<ServiceDatabaseContext>();
+    context.Database.EnsureCreated();
+    ServiceDatabaseContext.Initialise(context);
+}
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
+
+
 
 var scopeRequiredByApi = app.Configuration["AzureAd:Scopes"];
 var summaries = new[]
