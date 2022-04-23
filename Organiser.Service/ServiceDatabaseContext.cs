@@ -12,7 +12,6 @@ public class ServiceDatabaseContext : DbContext
     
     public ServiceDatabaseContext()
     {
-        // var path =  Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         var path = Directory.GetParent(System.Reflection.Assembly.GetExecutingAssembly().Location);
         databasePath = Path.Join(path?.FullName, "organiser.service.db");
     }

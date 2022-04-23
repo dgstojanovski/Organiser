@@ -1,6 +1,6 @@
-﻿@page "/tasks"
+﻿@page "/planning/tasks"
 @inject HttpClient Http
-@using Organiser.Models.Planning;
+@using Organiser.Models.Planning
 
 <PageTitle>Organiser - Tasks</PageTitle>
 
@@ -40,6 +40,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        tasks = await Http.GetFromJsonAsync<CalendarTask[]>("sample-data/tasks.json");
+        tasks = await Http.GetFromJsonAsync<CalendarTask[]>("planning/task");
     }
 }

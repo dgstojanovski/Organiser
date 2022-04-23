@@ -5,6 +5,8 @@ using Organiser.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
+const string CorsPolicyName = "_web";
+
 builder.Services.AddDbContext<ServiceDatabaseContext>();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -13,6 +15,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors(policy =>
+    policy.AddPolicy(name: CorsPolicyName, builder =>
+        builder.WithOrigins("https://*:7051/", "http://*:5051/")
+        .SetIsOriginAllowedToAllowWildcardSubdomains()
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowAnyOrigin()
+    )
+);
 
 var app = builder.Build();
 
@@ -40,4 +51,5 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.UseCors(CorsPolicyName);
 app.Run();

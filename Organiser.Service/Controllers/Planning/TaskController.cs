@@ -7,14 +7,14 @@ namespace Organiser.Service.Controllers
 {
     //[Authorize]
     [ApiController]
-    [Route("planning/[controller]")]
+    [Route("Planning/[controller]")]
     //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
-    public class CalendarTaskController : ControllerBase
+    public class TaskController : ControllerBase
     {
-        private readonly ILogger<CalendarTaskController> _logger;
+        private readonly ILogger<TaskController> _logger;
         private readonly ServiceDatabaseContext _context;
 
-        public CalendarTaskController(ILogger<CalendarTaskController> logger, ServiceDatabaseContext context)
+        public TaskController(ILogger<TaskController> logger, ServiceDatabaseContext context)
         {
             _logger = logger;
             _context = context;
