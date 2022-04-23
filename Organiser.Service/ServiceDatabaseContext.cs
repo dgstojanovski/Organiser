@@ -6,24 +6,25 @@ namespace Organiser.Service;
 
 public class ServiceDatabaseContext : DbContext
 {
-    public DbSet<CalenderTask> Tasks { get; set; }
+    public DbSet<TaskEntity>? Tasks { get; set; }
     
-    private string databasePath;
+    private readonly string databasePath;
     
     public ServiceDatabaseContext()
     {
-        var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        databasePath = Path.Join(path, "blogging.db");
+        // var path =  Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        var path = Directory.GetParent(System.Reflection.Assembly.GetExecutingAssembly().Location);
+        databasePath = Path.Join(path?.FullName, "organiser.service.db");
     }
     
     public static void Initialise(ServiceDatabaseContext context)
     {
-        if (context.Tasks.Any())
+        if (context.Tasks?.Any() ?? false)
             return;
 
         var tasks = new[]
         {
-            new CalenderTask
+            new TaskEntity
             {
                 Title = "Walk Walter around the block",
                 Description = "What it sounds like",
@@ -32,12 +33,10 @@ public class ServiceDatabaseContext : DbContext
             }
         };
         
-        context.Tasks.AddRange(tasks);
+        context.Tasks?.AddRange(tasks);
         context.SaveChanges();
     }
     
     protected override void OnConfiguring(DbContextOptionsBuilder options)
         => options.UseSqlite($"Data Source={databasePath}");
 }
-
-
